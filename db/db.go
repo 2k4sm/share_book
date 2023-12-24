@@ -4,11 +4,11 @@ import "time"
 
 // Book database Model.
 type Book struct {
-	Book_id  int       `gorm:"primaryKey; not null" json:"bood_id"`
-	Name     string    `json:"name" gorm:"not null"`
-	Author   string    `json:"author" gorm:"not null"`
-	ISBN     int       `json:"isbn" gorm:"not null; unique"`
-	YOR      time.Time `json:"yor"`
+	Book_id int       `gorm:"primaryKey; not null" json:"bood_id"`
+	Name    string    `json:"name" gorm:"not null"`
+	Author  string    `json:"author" gorm:"not null"`
+	ISBN    int       `json:"isbn" gorm:"not null; unique"`
+	AddedOn time.Time `json:"addedon"`
 }
 
 // Borrower database Model.
