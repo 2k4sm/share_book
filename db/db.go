@@ -3,17 +3,17 @@ package db
 import "time"
 
 type Book struct {
-	book_id  int `gorm:"primaryKey"`
-	name     string
-	author   string
-	isbn     int `gorm:"unique"`
-	yor      time.Time
-	owner_id int
+	Book_id  int `gorm:"primaryKey"`
+	Name     string
+	Author   string
+	ISBN     int `gorm:"unique"`
+	YOR      time.Time
+	Owner_id int
 }
 
 type Borrower struct {
-	book_id           int `gorm:"foreignKey"`
-	borrow_id         int `gorm:"primaryKey"`
-	borrow_start_time time.Time
-	borrow_end_time   time.Time
+	Book_id           int `gorm:"foreignKey"`
+	Borrow_id         int `gorm:"primaryKey"`
+	Borrow_start_time time.Time
+	Borrow_end_time   time.Time
 }
