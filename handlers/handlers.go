@@ -69,13 +69,13 @@ func ShareBook(ctx *fiber.Ctx) error {
 	if newbook.Name == "" || newbook.Author == "" || newbook.ISBN == 0 {
 		return fmt.Errorf("error while creating dbcalls:one of the required Params is empty")
 	}
-	newbook.YOR = time.Now()
+	newbook.AddedOn = time.Now()
 
 	book_db.Create(newbook)
 
 	books := []*db.Book{}
 
-	book_db.Order("book_id ASC").Find(&books)
+	book_db.Order("Name ASC").Find(&books)
 
 	return ctx.JSON(books)
 }
@@ -85,16 +85,14 @@ func ShareBook(ctx *fiber.Ctx) error {
 func ViewSharedBooks(ctx *fiber.Ctx) error {
 	ctx.Response().Header.SetContentType("application/json")
 	book_db, err := gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
-	
-	
+
 	if err != nil {
 		log.Fatal("Error Occured while connecting to books.db:", err)
 	}
 
 	books := []*db.Book{}
 
-
-	book_db.Order("book_id ASC").Find(&books)
+	book_db.Order("Name ASC").Find(&books)
 
 	return ctx.JSON(books)
 }
