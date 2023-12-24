@@ -21,7 +21,7 @@ func main() {
 	app.Put("/api/v1/booky", handlers.ShareBook)
 
 	// Retrieves all the books in share.
-	// app.Get()
+	app.Get("/api/v1/booky", handlers.ViewSharedBooks)
 
 	// // Borrows a book from the shared books for a specified time.
 	// app.Put()
