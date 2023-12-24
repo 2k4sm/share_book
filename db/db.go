@@ -4,18 +4,17 @@ import "time"
 
 // Book database Model.
 type Book struct {
-	Book_id  int `gorm:"primaryKey"`
-	Name     string
-	Author   string
-	ISBN     int `gorm:"unique"`
-	YOR      time.Time
-	Owner_id int
+	Book_id  int       `gorm:"primaryKey; not null" json:"bood_id"`
+	Name     string    `json:"name" gorm:"not null"`
+	Author   string    `json:"author" gorm:"not null"`
+	ISBN     int       `json:"isbn" gorm:"not null; unique"`
+	YOR      time.Time `json:"yor"`
 }
 
 // Borrower database Model.
 type Borrower struct {
-	Book_id           int `gorm:"foreignKey"`
-	Borrow_id         int `gorm:"primaryKey"`
-	Borrow_start_time time.Time
-	Borrow_end_time   time.Time
+	Book_id      uint      `gorm:"foreignKey; not null" json:"book_id"`
+	Borrow_id    uint      `gorm:"primaryKey; not null" json:"borrow_id"`
+	Borrow_start time.Time `json:"borrow_start" gorm:"not null"`
+	Borrow_end   time.Time `json:"borrow_end" gorm:"not null"`
 }
