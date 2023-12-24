@@ -4,7 +4,7 @@ import "time"
 
 // Book database Model.
 type Book struct {
-	Book_id int       `gorm:"primaryKey; not null" json:"bood_id"`
+	Book_id int       `gorm:"primaryKey; not null" json:"book_id"`
 	Name    string    `json:"name" gorm:"not null"`
 	Author  string    `json:"author" gorm:"not null"`
 	ISBN    int       `json:"isbn" gorm:"not null; unique"`
