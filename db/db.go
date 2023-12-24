@@ -2,6 +2,7 @@ package db
 
 import "time"
 
+// Book database Model.
 type Book struct {
 	Book_id  int `gorm:"primaryKey"`
 	Name     string
@@ -11,6 +12,7 @@ type Book struct {
 	Owner_id int
 }
 
+// Borrower database Model.
 type Borrower struct {
 	Book_id           int `gorm:"foreignKey"`
 	Borrow_id         int `gorm:"primaryKey"`
