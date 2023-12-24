@@ -11,6 +11,11 @@
 # API Design:-
 ![share_book](https://github.com/2k4sm/share_book/assets/101013814/95428636-859e-4679-aa2c-95eb0abd0af1)
 
+TODO:
+- [x] Add a Book for sharing with others
+- [x] Browse books that other users have put up for sharing
+- [ ] Borrow a book from a user for a certain duration of time. Let's call these as borrow_start_time and borrow_end_time
+- [ ] Return a borrowed book
 
 
 # Setting Up:-
