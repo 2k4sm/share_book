@@ -8,7 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
+
+// book database.
 var book_db *gorm.DB
+
+// borrower database.
 var borrower_db *gorm.DB
 
 func init() {
@@ -26,4 +30,5 @@ func init() {
 	if err != nil {
 		log.Fatal("Failed to connect to borrower_db due to error:", err)
 	}
+	borrower_db.AutoMigrate(&db.Borrower{})
 }
