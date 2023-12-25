@@ -14,8 +14,8 @@
 TODO:
 - [x] Add a Book for sharing with others
 - [x] Browse books that other users have put up for sharing
-- [ ] Borrow a book from a user for a certain duration of time. Let's call these as borrow_start_time and borrow_end_time
-- [ ] Return a borrowed book
+- [x] Borrow a book from a user for a certain duration of time. Let's call these as borrow_start_time and borrow_end_time
+- [x] Return a borrowed book
 
 
 # Setting Up:-
