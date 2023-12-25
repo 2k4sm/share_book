@@ -100,7 +100,7 @@ TODO(Create these endpoints..):
 - [x] Return a borrowed book
 
 
-Thanks for using share_book.
+## **_Thanks for using share_book._**
 
 # License
 
