@@ -13,8 +13,14 @@ type Book struct {
 
 // Borrower database Model.
 type Borrower struct {
-	Book_id      uint      `gorm:"foreignKey; not null" json:"book_id"`
-	Borrow_id    uint      `gorm:"primaryKey; not null" json:"borrow_id"`
+	Book_id   uint `gorm:"foreignKey; not null" json:"book_id"`
+	Borrow_id uint `gorm:"primaryKey; not null" json:"borrow_id"`
+
+	Name    string    `json:"name"`
+	Author  string    `json:"author"`
+	ISBN    int       `json:"isbn" gorm:"unique"`
+	AddedOn time.Time `json:"addedon"`
+
 	Borrow_start time.Time `json:"borrow_start" gorm:"not null"`
 	Borrow_end   time.Time `json:"borrow_end" gorm:"not null"`
 }
