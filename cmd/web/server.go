@@ -30,7 +30,7 @@ func main() {
 	app.Get("/api/v1/booky/borrow", handlers.ViewBorrowedBooks)
 
 	// Returns the shared book.
-	// app.Post("/api/v1/booky/:bookid/borrow/:borrowid", handlers.ReturnBorrowedBook)
+	app.Post("/api/v1/booky/:bookid/borrow/:borrowid", handlers.ReturnBorrowedBook)
 
 	log.Fatal(app.Listen(":8000"))
 }
