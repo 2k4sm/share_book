@@ -99,6 +99,8 @@ func ViewSharedBooks(ctx *fiber.Ctx) error {
 
 // Borrow a book for a certain duration of time.
 func BorrowBook(ctx *fiber.Ctx) error {
+	ctx.Response().Header.SetContentType("application/json")
+
 	borrower_db, err = gorm.Open(sqlite.Open("borrower.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Error Occured while connecting to borrower.db:", err)
@@ -123,15 +125,36 @@ func BorrowBook(ctx *fiber.Ctx) error {
 
 	//Creates a new Borrow if the book with bookId is present.
 	newBorrow := new(db.Borrower)
+	isBookAvailable := false
 	for _, book := range books {
 		if book.Book_id == bookIdInt {
+
+			isBookAvailable = true
 			newBorrow.Book_id = uint(bookIdInt)
 			newBorrow.Borrow_start = time.Now()
-			newBorrow.Borrow_end = time.Date(time.Now().Year(), time.Now().Month(), (time.Now().Day() + 7), 0, 0, 0, 0, nil)
+			newBorrow.Borrow_end = time.Date(time.Now().Year(), time.Now().Month(), (time.Now().Day() + 7), 0, 0, 0, 0, time.Now().Location())
 		}
 	}
-	book_db.Delete(bookIdInt)
+
+	if !isBookAvailable {
+		return ctx.JSON(fiber.Map{
+			"available_books": books,
+			"error":           "book not available for borrowing.",
+		})
+	}
+
+	book_db.Delete(&db.Book{}, book_id)
 
 	book_db.Order("name ASC").Find(&books)
+
+	borrower_db.Create(newBorrow)
+	borrowedBooks := []*db.Borrower{}
+
+	borrower_db.Order("book_id ASC").Find(&borrowedBooks)
+
+	return ctx.JSON(fiber.Map{
+		"booksinshare":  books,
+		"borrowedbooks": borrowedBooks,
+	})
 
 }
