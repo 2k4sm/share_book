@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/2k4sm/share_book/db"
@@ -81,7 +82,6 @@ func ShareBook(ctx *fiber.Ctx) error {
 }
 
 // View shared books.
-
 func ViewSharedBooks(ctx *fiber.Ctx) error {
 	ctx.Response().Header.SetContentType("application/json")
 	book_db, err := gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
@@ -95,4 +95,43 @@ func ViewSharedBooks(ctx *fiber.Ctx) error {
 	book_db.Order("Name ASC").Find(&books)
 
 	return ctx.JSON(books)
+}
+
+// Borrow a book for a certain duration of time.
+func BorrowBook(ctx *fiber.Ctx) error {
+	borrower_db, err = gorm.Open(sqlite.Open("borrower.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Error Occured while connecting to borrower.db:", err)
+	}
+
+	book_db, err := gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
+
+	if err != nil {
+		log.Fatal("Error Occured while connecting to books.db:", err)
+	}
+
+	book_id := ctx.Params("bookid")
+	bookIdInt, err := strconv.Atoi(book_id)
+
+	if err != nil {
+		log.Fatal("error converting book_id to int: ", err)
+	}
+
+	books := []*db.Book{}
+
+	book_db.Order("name ASC").Find(&books)
+
+	//Creates a new Borrow if the book with bookId is present.
+	newBorrow := new(db.Borrower)
+	for _, book := range books {
+		if book.Book_id == bookIdInt {
+			newBorrow.Book_id = uint(bookIdInt)
+			newBorrow.Borrow_start = time.Now()
+			newBorrow.Borrow_end = time.Date(time.Now().Year(), time.Now().Month(), (time.Now().Day() + 7), 0, 0, 0, 0, nil)
+		}
+	}
+	book_db.Delete(bookIdInt)
+
+	book_db.Order("name ASC").Find(&books)
+
 }
