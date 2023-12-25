@@ -81,7 +81,7 @@ func ShareBook(ctx *fiber.Ctx) error {
 	return ctx.JSON(books)
 }
 
-// View shared books.
+// View all the books that are currently in share.
 func ViewSharedBooks(ctx *fiber.Ctx) error {
 	ctx.Response().Header.SetContentType("application/json")
 	book_db, err := gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
@@ -97,7 +97,7 @@ func ViewSharedBooks(ctx *fiber.Ctx) error {
 	return ctx.JSON(books)
 }
 
-// Borrow a book for a certain duration of time.
+// Borrow a book for a certain Period of time(for now it's a week).
 func BorrowBook(ctx *fiber.Ctx) error {
 	ctx.Response().Header.SetContentType("application/json")
 
