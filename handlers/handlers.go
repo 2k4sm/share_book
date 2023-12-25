@@ -131,6 +131,11 @@ func BorrowBook(ctx *fiber.Ctx) error {
 
 			isBookAvailable = true
 			newBorrow.Book_id = uint(bookIdInt)
+			newBorrow.Name = book.Name
+			newBorrow.AddedOn = book.AddedOn
+			newBorrow.Author = book.Author
+			newBorrow.ISBN = book.ISBN
+
 			newBorrow.Borrow_start = time.Now()
 			newBorrow.Borrow_end = time.Date(time.Now().Year(), time.Now().Month(), (time.Now().Day() + 7), 0, 0, 0, 0, time.Now().Location())
 		}
