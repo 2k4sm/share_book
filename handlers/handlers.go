@@ -106,7 +106,7 @@ func BorrowBook(ctx *fiber.Ctx) error {
 		log.Fatal("Error Occured while connecting to borrower.db:", err)
 	}
 
-	book_db, err := gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
+	book_db, err = gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Error Occured while connecting to books.db:", err)
@@ -164,6 +164,7 @@ func BorrowBook(ctx *fiber.Ctx) error {
 
 }
 
+// View all the borrowed books.
 func ViewBorrowedBooks(ctx *fiber.Ctx) error {
 	ctx.Response().Header.SetContentType("application/json")
 
@@ -177,5 +178,72 @@ func ViewBorrowedBooks(ctx *fiber.Ctx) error {
 	borrower_db.Order("book_id ASC").Find(&borrowedBooks)
 
 	return ctx.JSON(borrowedBooks)
+
+}
+
+// Returns a borrowed book.
+func ReturnBorrowedBook(ctx *fiber.Ctx) error {
+	ctx.Response().Header.SetContentType("application/json")
+
+	book_id := ctx.Params("bookid")
+	bookIdInt, err := strconv.Atoi(book_id)
+	if err != nil {
+		log.Fatal("error converting book_id to int: ", err)
+	}
+
+	borrow_id := ctx.Params("borrowid")
+	borrowIdInt, err := strconv.Atoi(borrow_id)
+	if err != nil {
+		log.Fatal("error converting borrow_id to int: ", err)
+	}
+
+	borrower_db, err = gorm.Open(sqlite.Open("borrower.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Error Occured while connecting to borrower.db:", err)
+	}
+
+	book_db, err = gorm.Open(sqlite.Open("books.db"), &gorm.Config{})
+
+	if err != nil {
+		log.Fatal("Error Occured while connecting to books.db:", err)
+	}
+
+	allBorrowedBooks := []*db.Borrower{}
+	borrower_db.Order("borrow_id ASC").Find(&allBorrowedBooks)
+
+	bookToaddBack := new(db.Book)
+
+	isAvailable := false
+	for _, borrowedBook := range allBorrowedBooks {
+		if borrowedBook.Book_id == uint(bookIdInt) && borrowedBook.Borrow_id == uint(borrowIdInt) {
+			isAvailable = true
+			bookToaddBack.Name = borrowedBook.Name
+			bookToaddBack.Author = borrowedBook.Author
+			bookToaddBack.ISBN = borrowedBook.ISBN
+			bookToaddBack.AddedOn = time.Now()
+
+		}
+	}
+
+	if !isAvailable {
+		return ctx.JSON(fiber.Map{
+			"error":         "book not borrowed.",
+			"borrowedBooks": allBorrowedBooks,
+		})
+	}
+
+	borrower_db.Delete(&db.Borrower{}, borrow_id)
+
+	borrower_db.Order("name ASC").Find(&allBorrowedBooks)
+
+	book_db.Create(bookToaddBack)
+	booksAvailable := []*db.Book{}
+
+	book_db.Order("name ASC").Find(&booksAvailable)
+
+	return ctx.JSON(fiber.Map{
+		"booksinshare":  booksAvailable,
+		"borrowedbooks": allBorrowedBooks,
+	})
 
 }
