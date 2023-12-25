@@ -13,7 +13,7 @@ func main() {
 		Prefork:       true,
 		CaseSensitive: true,
 		StrictRouting: true,
-		ServerHeader:  "Fiber",
+		ServerHeader:  "FiberXshare_book",
 		AppName:       "share_book v0.0.1",
 	})
 
@@ -23,10 +23,10 @@ func main() {
 	// Retrieves all the books in share.
 	app.Get("/api/v1/booky", handlers.ViewSharedBooks)
 
-	// Borrows a book from the shared books for a specified time.
+	// Borrows a book from the shared books for a specified time(a week).
 	app.Put("/api/v1/booky/:bookid/borrow",handlers.BorrowBook)
 
-	// // Returns the shared book.
+	// Returns the shared book.
 	// app.Post()
 
 	log.Fatal(app.Listen(":8000"))
