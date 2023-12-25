@@ -158,3 +158,19 @@ func BorrowBook(ctx *fiber.Ctx) error {
 	})
 
 }
+
+func ViewBorrowedBooks(ctx *fiber.Ctx) error {
+	ctx.Response().Header.SetContentType("application/json")
+
+	borrower_db, err = gorm.Open(sqlite.Open("borrower.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Error Occured while connecting to borrower.db:", err)
+	}
+
+	borrowedBooks := []*db.Borrower{}
+
+	borrower_db.Order("book_id ASC").Find(&borrowedBooks)
+
+	return ctx.JSON(borrowedBooks)
+
+}
