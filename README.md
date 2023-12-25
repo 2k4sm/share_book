@@ -34,14 +34,18 @@ TODO:
   go mod tidy
   
   ```
+- To build the server do:-
+    ```
+    go build cmd/web/server.go
+    ```
 - To start the server do:-
     ```
-    go run cmd/web/server.go
+    ./server
     
     ```
     From the root directory of _share_book_.
 ## Your server is started at port `:8000`.
-## Use curl/hoppscotch/postman to test the API.
+-  Use curl/hoppscotch/postman to test the API.
 
 # API Usage Guide:-
 - To Add a book for sharing do:-
