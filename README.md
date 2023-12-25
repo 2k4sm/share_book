@@ -68,27 +68,27 @@
     - To Add a book for sharing do:-
       - `PUT`
         ```
-          http://localhost:8000/api/v1/booky/
+          localhost:8000/api/v1/booky/
         ```
     - To Browse the shared books do:-
       - `GET`
         ```
-          http://localhost:8000/api/v1/booky/
+          localhost:8000/api/v1/booky/
         ```
     - To borrow a book for certain duration of time do:-
       - `PUT`
         ```
-        http://localhost:8000/api/v1/booky/<book_id>/borrow
+        localhost:8000/api/v1/booky/<book_id>/borrow
         ```
     - To view all the borrowed books:-
       - `GET`
         ```
-        http://localhost:8000/api/v1/booky/borrow
+        localhost:8000/api/v1/booky/borrow
         ```  
     - To return a borrowed book do:-
       - `POST`
         ```
-        http://localhost:8000/api/v1/booky/<book_id>/borrow/<borrow_id>
+        localhost:8000/api/v1/booky/<book_id>/borrow/<borrow_id>
         ```
 
            
